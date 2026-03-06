@@ -3,7 +3,6 @@ package main
 import (
     "context"
     "encoding/json"
-    "fmt"
     "log"
     "net/http"
     "os"
@@ -32,15 +31,15 @@ func main() {
     log.SetFlags(log.LstdFlags | log.Lshortfile)
     log.Println("🚀 Запуск Whatsmeow API...")
 
-    // Инициализация базы данных
+    // Инициализация базы данных с context
     dbLog := log.New(os.Stderr, "DB: ", log.LstdFlags)
-    storeContainer, err := sqlstore.New("sqlite3", "file:whatsapp.db?_foreign_keys=on", dbLog)
+    storeContainer, err := sqlstore.New(context.Background(), "sqlite3", "file:whatsapp.db?_foreign_keys=on", dbLog)
     if err != nil {
         log.Fatalf("Ошибка подключения к БД: %v", err)
     }
 
-    // Получаем устройство
-    device, err := storeContainer.GetFirstDevice()
+    // Получаем устройство с context
+    device, err := storeContainer.GetFirstDevice(context.Background())
     if err != nil {
         log.Fatalf("Ошибка получения устройства: %v", err)
     }
@@ -73,9 +72,9 @@ func main() {
 func eventHandler(evt interface{}) {
     switch v := evt.(type) {
     case *events.QR:
-        // Пришёл QR-код для сканирования
-        qrterminal.GenerateHalfBlock(v.Code, qrterminal.L, os.Stdout)
-        qrChannel <- v.Code
+        // Пришёл QR-код для сканирования - исправлено поле Code на QRCode
+        qrterminal.GenerateHalfBlock(v.QRCode, qrterminal.L, os.Stdout)
+        qrChannel <- v.QRCode
     case *events.Connected:
         // Успешно подключились
         log.Println("✅ Подключено к WhatsApp!")
@@ -157,8 +156,8 @@ func checkPhoneHandler(w http.ResponseWriter, r *http.Request) {
     cleanPhone := strings.ReplaceAll(phone, "+", "")
     jid := types.NewJID(cleanPhone, types.DefaultUserServer)
 
-    // Проверяем, есть ли номер в WhatsApp
-    exists, err := client.IsOnWhatsApp([]types.JID{jid})
+    // Проверяем, есть ли номер в WhatsApp - исправлено на []string
+    exists, err := client.IsOnWhatsApp(context.Background(), []string{cleanPhone})
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
@@ -176,7 +175,7 @@ func checkPhoneHandler(w http.ResponseWriter, r *http.Request) {
     }
 
     // Пробуем получить информацию о пользователе
-    userInfo, err := client.GetUserInfo([]types.JID{jid})
+    userInfo, err := client.GetUserInfo(context.Background(), []types.JID{jid})
     if err != nil {
         // Если ошибка, возможно номер заблокирован
         w.Header().Set("Content-Type", "application/json")
