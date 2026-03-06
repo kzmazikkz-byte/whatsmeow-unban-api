@@ -1,8 +1,0 @@
-github.com/mattn/go-sqlite3 v1.14.22 h1:2gZY6PC6kBnID23Tichd1K+Z0oS6nE/XwU+Vz/5o4kU=
-github.com/mattn/go-sqlite3 v1.14.22/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
-github.com/mdp/qrterminal v1.0.1 h1:07+fzVDlCu1lNbHkjYgLF5pE4i2noAhb07cCOMWMfL8=
-github.com/mdp/qrterminal v1.0.1/go.mod h1:Z33WhxQe9B6CdW37HaVqcRKzP+kByF3q/qLxOGe12xQ=
-go.mau.fi/whatsmeow v0.0.0-20240226101130-9ae1d0b7ed1c h1:cq+om2KnMo+jN99XbUG/5wLWh35FjS4C5Kc1zYQ7k8A=
-go.mau.fi/whatsmeow v0.0.0-20240226101130-9ae1d0b7ed1c/go.mod h1:3kZ4v6mWuhxcfSGP54GBW5cFkrdAZQq+UKA17i9Wr70=
-google.golang.org/protobuf v1.32.0 h1:pPC6BG5ex8PDFnkbrGU3EixyhKcQ2aDuBS36lqK/C7I=
-google.golang.org/protobuf v1.32.0/go.mod h1:c6P6GXX6sHbq/GpV6MGZEdwhWPcYBgnhAHhKbcUYpos=
